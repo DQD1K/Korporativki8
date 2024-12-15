@@ -102,7 +102,6 @@ func toggleCart(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(products[productID])
 }
 
-// Новый обработчик для удаления продукта
 func deleteProduct(w http.ResponseWriter, r *http.Request) {
 	// Установка заголовков CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -122,13 +121,12 @@ func deleteProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("Получен запрос на /delete-product")
-	// Удаляем продукт
-	products = append(products[:productID], products[productID+1:]...) // Удаляем продукт из среза
 
-	w.WriteHeader(http.StatusNoContent) // Возвращаем статус 204 No Content
+	products = append(products[:productID], products[productID+1:]...)
+
+	w.WriteHeader(http.StatusNoContent)
 }
 
-// Новый обработчик для получения товаров в корзине
 func getCartItems(w http.ResponseWriter, r *http.Request) {
 	// Установка заголовков CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -143,7 +141,6 @@ func getCartItems(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Получен запрос на /cart-items")
 	w.Header().Set("Content-Type", "application/json")
 
-	// Фильтруем продукты, чтобы получить только те, которые в корзине
 	var cartItems []Product
 	for _, product := range products {
 		if product.IsInCart {
@@ -151,5 +148,5 @@ func getCartItems(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json.NewEncoder(w).Encode(cartItems) // Возвращаем товары в корзине
+	json.NewEncoder(w).Encode(cartItems)
 }
